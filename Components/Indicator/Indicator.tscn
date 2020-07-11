@@ -96,6 +96,7 @@ shape = SubResource( 1 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "Pulse"
+playback_speed = 2.0
 anims/Appear = SubResource( 5 )
 anims/Pulse = SubResource( 4 )
 [connection signal="input_event" from="." to="." method="_on_Indicator1_input_event"]

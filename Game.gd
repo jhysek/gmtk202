@@ -4,34 +4,37 @@ export var CELL_SIZE = 32
 export var STEP_TIME = 3
 
 var indicators = 0
+var moves = -1
 var started = false
 var exit_map_pos = Vector2(0,0)
 var step_time = 0
 var selected_indicator 
+
+var map = []
 
 onready var player = $Player
 
 func _ready():
 	exit_map_pos = world_to_map($Exit.position)
 	$Exit.position = map_to_world(exit_map_pos)
-	$Player.jump_to(Vector2(10,10))
+	$Player.jump_to(Vector2(8,14))
 	draw_indicators()
 	
 func start():
 	started = true
+	$Music.play()
+	$Player/SelectedLine.show()
 	set_process(true)
 	
 func _process(delta):
 	if started:
 		step_time += delta
 		if selected_indicator:
-			print(step_time)
 			selected_indicator.set_progress(step_time / STEP_TIME * 100)
 			
 		if step_time >= STEP_TIME:
 			step_time = 0
 			player.jump_to(world_to_map(selected_indicator.position))
-	
 	
 func indicator_clicked(indicator):
 	if not started:
@@ -48,13 +51,13 @@ func indicator_clicked(indicator):
 	line.set_point_position(1, Vector2(0, indicator.position.y - player.position.y))
 	line.set_point_position(2, indicator.position - player.position)
 	
+func redraw_moves():
+	$CanvasLayer/UI/Label.text = "MOVES: " + str(moves)
 
 func jumped_at(map_pos: Vector2):
-	print("=> " + str(map_pos))
-	print("? " + str(exit_map_pos))
+	moves += 1
+	redraw_moves()
 	
-	$Player/SelectedLine.hide()
-
 	
 	if (map_pos == exit_map_pos):
 		print("FINUSHED")

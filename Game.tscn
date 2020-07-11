@@ -1,11 +1,13 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://assets/Dungeon_Tileset.png" type="Texture" id=1]
-[ext_resource path="res://Player.gd" type="Script" id=3]
+[ext_resource path="res://assets/music/bgm_action_1.ogg" type="AudioStream" id=2]
+[ext_resource path="res://Components/Player/Player.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Game.gd" type="Script" id=4]
-[ext_resource path="res://Components/Exit/exit.png" type="Texture" id=5]
-[ext_resource path="res://assets/horse.png" type="Texture" id=6]
+[ext_resource path="res://Components/Enemy/Enemy.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Components/Indicator/Indicator.tscn" type="PackedScene" id=7]
+[ext_resource path="res://assets/SHPinscher-Regular.otf" type="DynamicFontData" id=8]
+[ext_resource path="res://assets/dungeon tileset calciumtrice.png" type="Texture" id=12]
 
 [sub_resource type="TileSet" id=1]
 0/name = "Dungeon_Tileset.png 0"
@@ -77,20 +79,9 @@
 3/shapes = [  ]
 3/z_index = 0
 
-[sub_resource type="Animation" id=2]
-resource_name = "FadeIn"
-tracks/0/type = "value"
-tracks/0/path = NodePath(".:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.5 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
-}
+[sub_resource type="DynamicFont" id=3]
+size = 30
+font_data = ExtResource( 8 )
 
 [node name="Game" type="Node2D"]
 script = ExtResource( 4 )
@@ -102,8 +93,10 @@ format = 1
 tile_data = PoolIntArray( 458763, 3, 65537, 458764, 3, 65540, 458765, 3, 4, 458766, 3, 65540, 524297, 1, 1, 524298, 3, 4, 524299, 1, 1, 524300, 3, 4, 524301, 1, 1, 524302, 3, 4, 524303, 1, 1, 524304, 1, 458755, 589832, 3, 65541, 589833, 3, 4, 589834, 1, 1, 589835, 3, 4, 589836, 1, 1, 589837, 3, 4, 589838, 3, 2, 589839, 3, 4, 589840, 1, 1, 589841, 3, 65536, 655367, 3, 65541, 655368, 3, 4, 655369, 1, 1, 655370, 3, 4, 655371, 1, 1, 655372, 3, 4, 655373, 1, 1, 655374, 3, 4, 655375, 1, 1, 655376, 3, 4, 655377, 3, 65538, 720903, 3, 65537, 720904, 3, 65541, 720905, 3, 65537, 720906, 1, 1, 720907, 3, 4, 720908, 1, 1, 720909, 3, 4, 720910, 1, 1, 720911, 3, 4, 720912, 1, 1, 786439, 3, 65541, 786440, 3, 4, 786441, 1, 1, 786442, 3, 4, 786443, 1, 1, 786444, 3, 4, 786445, 1, 1, 786446, 3, 4, 786447, 1, 1, 786448, 1, 1, 851976, 3, 65541, 851977, 3, 4, 851978, 1, 1, 851979, 3, 4, 851980, 1, 1, 851981, 3, 4, 851982, 1, 1, 851983, 3, 4, 851984, 1, 1, 917513, 3, 65541, 917514, 3, 65537 )
 
 [node name="Exit" type="Sprite" parent="."]
-position = Vector2( 424.061, 392.349 )
-texture = ExtResource( 5 )
+position = Vector2( 432.357, 397.767 )
+texture = ExtResource( 12 )
+region_enabled = true
+region_rect = Rect2( 30.8785, 303.394, 16.9877, 18.5679 )
 
 [node name="Indicators" type="Node2D" parent="."]
 
@@ -131,29 +124,38 @@ visible = false
 [node name="Indicator8" parent="Indicators" instance=ExtResource( 7 )]
 visible = false
 
-[node name="Player" type="Sprite" parent="."]
-position = Vector2( 368.381, 335.417 )
-texture = ExtResource( 6 )
-script = ExtResource( 3 )
-
-[node name="Camera2D" type="Camera2D" parent="Player"]
-position = Vector2( 24.4547, -28.4575 )
-current = true
-zoom = Vector2( 0.4, 0.4 )
-smoothing_enabled = true
-
-[node name="SelectedLine" type="Line2D" parent="Player"]
-modulate = Color( 1, 1, 1, 0 )
-show_behind_parent = true
-points = PoolVector2Array( 0, 0, 32, 0, 32, 32 )
-width = 32.0
-default_color = Color( 0.0196078, 0.0196078, 0.0196078, 0.243137 )
-begin_cap_mode = 1
-end_cap_mode = 1
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Player/SelectedLine"]
-anims/FadeIn = SubResource( 2 )
+[node name="Player" parent="." instance=ExtResource( 3 )]
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.1
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 2 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="UI" type="Control" parent="CanvasLayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 57.1693
+margin_top = 69.1958
+margin_right = 57.1693
+margin_bottom = 69.1958
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="CanvasLayer/UI"]
+margin_left = -14.4861
+margin_top = -32.1031
+margin_right = 73.5139
+margin_bottom = 4.89691
+custom_fonts/font = SubResource( 3 )
+text = "Moves: 0"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Enemy" parent="." instance=ExtResource( 5 )]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
