@@ -1,9 +1,11 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://assets/Dungeon_Tileset.png" type="Texture" id=1]
-[ext_resource path="res://icon.png" type="Texture" id=2]
 [ext_resource path="res://Player.gd" type="Script" id=3]
 [ext_resource path="res://Game.gd" type="Script" id=4]
+[ext_resource path="res://Components/Exit/exit.png" type="Texture" id=5]
+[ext_resource path="res://assets/horse.png" type="Texture" id=6]
+[ext_resource path="res://Components/Indicator/Indicator.tscn" type="PackedScene" id=7]
 
 [sub_resource type="TileSet" id=1]
 0/name = "Dungeon_Tileset.png 0"
@@ -75,6 +77,21 @@
 3/shapes = [  ]
 3/z_index = 0
 
+[sub_resource type="Animation" id=2]
+resource_name = "FadeIn"
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+
 [node name="Game" type="Node2D"]
 script = ExtResource( 4 )
 
@@ -82,57 +99,61 @@ script = ExtResource( 4 )
 tile_set = SubResource( 1 )
 cell_size = Vector2( 32, 32 )
 format = 1
-tile_data = PoolIntArray( 131095, 1, 0, 458763, 3, 65537, 458764, 3, 65540, 458765, 3, 4, 458766, 3, 65540, 524297, 1, 1, 524298, 3, 4, 524299, 1, 1, 524300, 3, 4, 524301, 1, 1, 524302, 3, 4, 524303, 1, 1, 524304, 1, 458755, 589832, 3, 65541, 589833, 3, 4, 589834, 1, 1, 589835, 3, 4, 589836, 1, 1, 589837, 3, 4, 589838, 3, 2, 589839, 3, 4, 589840, 1, 1, 589841, 3, 65536, 655367, 3, 65541, 655368, 3, 4, 655369, 1, 1, 655370, 3, 4, 655371, 1, 1, 655372, 3, 4, 655373, 1, 1, 655374, 3, 4, 655375, 1, 1, 655376, 3, 4, 655377, 3, 65538, 720903, 3, 65537, 720904, 3, 65541, 720905, 3, 65537, 720906, 1, 1, 720907, 3, 4, 720908, 1, 1, 720909, 3, 4, 720910, 1, 1, 720911, 3, 4, 720912, 1, 1, 786439, 3, 65541, 786440, 3, 4, 786441, 1, 1, 786442, 3, 4, 786443, 1, 1, 786444, 3, 4, 786445, 1, 1, 786446, 3, 4, 786447, 1, 1, 786448, 1, 1, 851976, 3, 65541, 851977, 3, 4, 851978, 1, 1, 851979, 3, 4, 851980, 1, 1, 851981, 3, 4, 851982, 1, 1, 851983, 3, 4, 851984, 1, 1, 917513, 3, 65541, 917514, 3, 65537 )
+tile_data = PoolIntArray( 458763, 3, 65537, 458764, 3, 65540, 458765, 3, 4, 458766, 3, 65540, 524297, 1, 1, 524298, 3, 4, 524299, 1, 1, 524300, 3, 4, 524301, 1, 1, 524302, 3, 4, 524303, 1, 1, 524304, 1, 458755, 589832, 3, 65541, 589833, 3, 4, 589834, 1, 1, 589835, 3, 4, 589836, 1, 1, 589837, 3, 4, 589838, 3, 2, 589839, 3, 4, 589840, 1, 1, 589841, 3, 65536, 655367, 3, 65541, 655368, 3, 4, 655369, 1, 1, 655370, 3, 4, 655371, 1, 1, 655372, 3, 4, 655373, 1, 1, 655374, 3, 4, 655375, 1, 1, 655376, 3, 4, 655377, 3, 65538, 720903, 3, 65537, 720904, 3, 65541, 720905, 3, 65537, 720906, 1, 1, 720907, 3, 4, 720908, 1, 1, 720909, 3, 4, 720910, 1, 1, 720911, 3, 4, 720912, 1, 1, 786439, 3, 65541, 786440, 3, 4, 786441, 1, 1, 786442, 3, 4, 786443, 1, 1, 786444, 3, 4, 786445, 1, 1, 786446, 3, 4, 786447, 1, 1, 786448, 1, 1, 851976, 3, 65541, 851977, 3, 4, 851978, 1, 1, 851979, 3, 4, 851980, 1, 1, 851981, 3, 4, 851982, 1, 1, 851983, 3, 4, 851984, 1, 1, 917513, 3, 65541, 917514, 3, 65537 )
 
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2( 392.836, 306.96 )
-current = true
-zoom = Vector2( 0.4, 0.4 )
-
-[node name="icon" type="Sprite" parent="."]
-modulate = Color( 1, 0, 0, 1 )
-position = Vector2( 398.599, 303.261 )
-scale = Vector2( 0.23904, 0.235816 )
-texture = ExtResource( 2 )
+[node name="Exit" type="Sprite" parent="."]
+position = Vector2( 424.061, 392.349 )
+texture = ExtResource( 5 )
 
 [node name="Indicators" type="Node2D" parent="."]
 
-[node name="Indicator1" type="Sprite" parent="."]
-modulate = Color( 0.168627, 0.168627, 0.168627, 0.364706 )
-position = Vector2( 367.526, 335.018 )
-scale = Vector2( 0.23904, 0.235816 )
-texture = ExtResource( 2 )
+[node name="Indicator1" parent="Indicators" instance=ExtResource( 7 )]
+visible = false
 
-[node name="Indicator2" type="Sprite" parent="."]
-modulate = Color( 0.168627, 0.168627, 0.168627, 0.364706 )
-position = Vector2( 394.601, 307.665 )
-scale = Vector2( 0.23904, 0.235816 )
-texture = ExtResource( 2 )
+[node name="Indicator2" parent="Indicators" instance=ExtResource( 7 )]
+visible = false
 
-[node name="Indicator3" type="Sprite" parent="."]
-modulate = Color( 0.168627, 0.168627, 0.168627, 0.364706 )
-position = Vector2( 370.167, 272.503 )
-scale = Vector2( 0.23904, 0.235816 )
-texture = ExtResource( 2 )
+[node name="Indicator3" parent="Indicators" instance=ExtResource( 7 )]
+visible = false
 
-[node name="Indicator4" type="Sprite" parent="."]
-modulate = Color( 0.427451, 1, 0.168627, 0.364706 )
-position = Vector2( 401.571, 271.036 )
-scale = Vector2( 0.23904, 0.235816 )
-texture = ExtResource( 2 )
+[node name="Indicator4" parent="Indicators" instance=ExtResource( 7 )]
+visible = false
 
-[node name="Exit" type="Sprite" parent="."]
-modulate = Color( 0.215686, 0.741176, 1, 1 )
-position = Vector2( 424.061, 392.349 )
-scale = Vector2( 0.222068, 0.222754 )
-texture = ExtResource( 2 )
+[node name="Indicator5" parent="Indicators" instance=ExtResource( 7 )]
+visible = false
+
+[node name="Indicator6" parent="Indicators" instance=ExtResource( 7 )]
+visible = false
+
+[node name="Indicator7" parent="Indicators" instance=ExtResource( 7 )]
+visible = false
+
+[node name="Indicator8" parent="Indicators" instance=ExtResource( 7 )]
+visible = false
 
 [node name="Player" type="Sprite" parent="."]
-position = Vector2( 368.243, 334.727 )
-scale = Vector2( 0.171328, 0.173477 )
-texture = ExtResource( 2 )
+position = Vector2( 368.381, 335.417 )
+texture = ExtResource( 6 )
 script = ExtResource( 3 )
 
+[node name="Camera2D" type="Camera2D" parent="Player"]
+position = Vector2( 24.4547, -28.4575 )
+current = true
+zoom = Vector2( 0.4, 0.4 )
+smoothing_enabled = true
+
+[node name="SelectedLine" type="Line2D" parent="Player"]
+modulate = Color( 1, 1, 1, 0 )
+show_behind_parent = true
+points = PoolVector2Array( 0, 0, 32, 0, 32, 32 )
+width = 32.0
+default_color = Color( 0.0196078, 0.0196078, 0.0196078, 0.243137 )
+begin_cap_mode = 1
+end_cap_mode = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Player/SelectedLine"]
+anims/FadeIn = SubResource( 2 )
+
 [node name="Timer" type="Timer" parent="."]
-wait_time = 1.5
+wait_time = 0.1
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
