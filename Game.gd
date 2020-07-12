@@ -20,6 +20,11 @@ func _ready():
 	$CanvasLayer/UI/Label.get_font("font").use_filter = true
 	$CanvasLayer/UI/Label.get_font("font").use_filter = false
 	
+	if $CanvasLayer.has_node("Label"):
+		$CanvasLayer/Label.get_font("font").font_data.antialiased = false
+		$CanvasLayer/Label.get_font("font").use_filter = true
+		$CanvasLayer/Label.get_font("font").use_filter = false
+	
 	$CanvasLayer/UI/LevelNumber.text = "LEVEL " + str(LevelSwitcher.current_level + 1)
 	$CanvasLayer/AnimationPlayer.play("LevelStart")
 	
@@ -60,6 +65,9 @@ func indicator_clicked(indicator):
 	indicator.select()
 	selected_indicator = indicator
 	
+	if $CanvasLayer.has_node("Label"):
+		$CanvasLayer/Label.hide()
+		
 	var line = $Player/SelectedLine
 	line.get_node("AnimationPlayer").play("FadeIn")
 	line.set_point_position(1, Vector2(0, indicator.position.y - player.position.y))

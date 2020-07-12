@@ -114,6 +114,7 @@ __meta__ = {
 position = Vector2( -51.6143, 14.3864 )
 scale = Vector2( 0.5, 0.5 )
 frames = SubResource( 6 )
+frame = 3
 playing = true
 
 [node name="Sprite2" type="Sprite" parent="Horse"]
