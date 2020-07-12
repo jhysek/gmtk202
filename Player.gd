@@ -19,6 +19,8 @@ onready var game = get_node("/root/Game")
 var map_position
 var jump_position
 var next_move
+var tween_path = []
+var dead = false
 										
 func jump_to(m_pos):
 	var move = Vector2(0,0)	
@@ -28,13 +30,17 @@ func jump_to(m_pos):
 		move = m_pos - map_position
 		$Sprite.flip_h = move.x < 0
 
-		
 	map_position = m_pos
-	position = game.map_to_world(map_position)
+	
+	$SelectedLine/AnimationPlayer.play_backwards("FadeIn")
+	$Tween.interpolate_property(self, 'position', position, game.map_to_world(map_position), 0.5, Tween.TRANS_EXPO, Tween.EASE_OUT)
+	$Tween.start()
+	$Sfx/Move.play()
 	set_indicator_positions()
+	
 	game.jumped_at(map_position)
-	if move != Vector2(0,0):
-		shot(move.x)	
+	#if move != Vector2(0,0):
+	#	shot(move.x)	
 	
 	
 func set_indicator_positions():
@@ -44,7 +50,6 @@ func set_indicator_positions():
 		idx += 1		
 	
 func shot(direction):
-	print("SHOOT")
 	var bullet = Bullet.instance()
 	bullet.position = position 
 	bullet.fire(direction)
@@ -52,4 +57,11 @@ func shot(direction):
 	get_node("/root/Game").add_child(bullet)
 	
 func die():
-	queue_free()
+	$Sfx/Death.play()
+	dead = true
+	$Camera2D.shake(0.5, 50, 20)
+	game.over()
+	hide()
+
+func _on_Tween_tween_completed(object, key):
+	$SelectedLine/AnimationPlayer.play("FadeIn")
